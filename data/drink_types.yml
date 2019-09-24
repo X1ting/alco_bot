@@ -1,0 +1,57 @@
+drink_types:
+  - id: 0
+    name: Beer
+    abv: 5
+    emoji: 🍺
+    volumes:
+      - 300
+      - 500
+      - 1000
+  - id: 1
+    name: Whiskey
+    abv: 40
+    emoji: 🥃
+    volumes:
+      - 40
+      - 100
+      - 200
+  - id: 2
+    name: Vodka
+    abv: 40
+    emoji: 🥃
+    volumes:
+      - 40
+      - 100
+      - 200
+  - id: 3
+    name: Rhum
+    abv: 40
+    emoji: 🥃
+    volumes:
+      - 40
+      - 100
+      - 200
+  - id: 4
+    name: Tequila
+    abv: 40
+    emoji: 🥃
+    volumes:
+      - 40
+      - 100
+      - 200
+  - id: 5
+    name: Wine
+    abv: 12
+    emoji: 🍷
+    volumes:
+      - 125
+      - 250
+      - 500
+  - id: 6
+    name: Samogon
+    abv: 60
+    emoji: ⚰️
+    volumes:
+      - 40
+      - 100
+      - 200
