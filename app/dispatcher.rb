@@ -1,17 +1,18 @@
 class Dispatcher
   def initialize(bot)
     @fallback = Commands::Unknown.new(bot.api)
-    @commands = Repositories::DrinkTypeRepo.new(Application[:rom]).all.map do |drink|
-      ["#{drink.emoji} #{drink.name} #{drink.abv}%", Commands::DrinkIn.new(bot.api)]
-    end.to_h.merge({
+    @commands = {
       '/start' => Commands::Start.new(bot.api),
       '🍻 Drink-in!' => Commands::ChooseDrinkType.new(bot.api),
       '🍻 Drunk beer!' => Commands::Beers.new(bot.api),
       '◀️ Back' => Commands::Back.new(bot.api),
-    })
+    }
 
     @callbacks = {
       'back' => commands['◀️ Back'],
+      'drink' => commands['🍻 Drink-in!'],
+      'volume' => commands['🍻 Drink-in!'],
+      'count' => commands['🍻 Drink-in!'],
     }
   end
 
