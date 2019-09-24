@@ -1,6 +1,5 @@
 class DrinkTypes < ROM::Relation[:yaml]
   gateway :default
-
   schema(infer: true) do
     attribute :id, ROM::Types::Integer
     attribute :name, ROM::Types::String
