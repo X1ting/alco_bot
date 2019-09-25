@@ -1,6 +1,9 @@
 module Commands
   class ChooseDrinkType < Base
-    include Import[repo: 'repositories.drink_type_repo']
+    include Import[
+      repo: 'repositories.drink_type_repo',
+      drink_service: 'services.drink'
+    ]
 
     def handle_call(message)
       username = username_for(message.from)
@@ -16,19 +19,21 @@ module Commands
       id = args.fetch('id') { raise(FallbackError) }
       drink = repo.by_id(id) || raise(FallbackError)
       username = username_for(callback.from)
-      confirmed = args.fetch('confirm', false)
-      volumed = args.fetch('volume_check', false)
-      if !confirmed && !volumed
+      volume = args.fetch('volume', false)
+      count = args.fetch('count', false)
+      if !count && !volume
         ask_for_volume(callback, drink)
-      elsif !confirmed && volumed
-        ask_for_count(callback, drink)
+      elsif !count && volume
+        ask_for_count(callback, drink, volume)
       else
+        binding.pry
+        count.times { drink_service.drink(callback.message.chat.id, drink, volume) }
         report_success(callback)
       end
     end
 
     def ask_for_volume(callback, drink)
-      volume_buttons = drink.volumes.map { |volume| button(volume, 'volume', { id: drink.id, volume_check: true }) }
+      volume_buttons = drink.volumes.map { |volume| button(volume, 'volume', { id: drink.id, volume: volume }) }
       edit_message_text(
         message_id: callback.message.message_id,
         chat_id: callback.message.chat.id,
@@ -41,8 +46,8 @@ module Commands
       )
     end
 
-    def ask_for_count(callback, drink)
-      count_buttons = [1,2,3,4].map { |count| button(count, 'count', { id: drink.id, confirm: true }) }
+    def ask_for_count(callback, drink, volume)
+      count_buttons = [1,2,3,4].map { |count| button(count, 'count', { id: drink.id, volume: volume, count: count }) }
       edit_message_text(
         message_id: callback.message.message_id,
         chat_id: callback.message.chat.id,

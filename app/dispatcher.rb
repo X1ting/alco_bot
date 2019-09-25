@@ -4,7 +4,6 @@ class Dispatcher
     @commands = {
       '/start' => Commands::Start.new(bot.api),
       '🍻 Drink-in!' => Commands::ChooseDrinkType.new(bot.api),
-      '🍻 Drunk beer!' => Commands::Beers.new(bot.api),
       '◀️ Back' => Commands::Back.new(bot.api),
     }
 

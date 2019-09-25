@@ -12,9 +12,7 @@ module Commands
     def handle_call(message)
       chat_id = message.chat.id
 
-      if wrong_time?
-        message = wrong_time_message
-      elsif drinks_too_fast?(chat_id)
+      if drinks_too_fast?(chat_id)
         message = too_fast_message(chat_id)
       else
         beer_service.drink(chat_id)
