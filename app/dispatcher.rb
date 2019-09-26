@@ -3,15 +3,19 @@ class Dispatcher
     @fallback = Commands::Unknown.new(bot.api)
     @commands = {
       '/start' => Commands::Start.new(bot.api),
+      '/leaderships' => Commands::Leaderships.new(bot.api),
       '🍻 Drink-in!' => Commands::ChooseDrinkType.new(bot.api),
+      '📊 Stats' => Commands::StatsMenu.new(bot.api),
+      '👨‍🎤 Personal' => Commands::PersonalStats.new(bot.api),
+      '👨‍👩‍👧‍👦🎉 Party' => Commands::PartyStats.new(bot.api),
       '◀️ Back' => Commands::Back.new(bot.api),
     }
 
     @callbacks = {
       'back' => commands['◀️ Back'],
-      'drink' => commands['🍻 Drink-in!'],
-      'volume' => commands['🍻 Drink-in!'],
-      'count' => commands['🍻 Drink-in!'],
+      'drink' => Commands::DrinkIn.new(bot.api),
+      'volume' => Commands::DrinkIn.new(bot.api),
+      'count' => Commands::DrinkIn.new(bot.api),
     }
   end
 

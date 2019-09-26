@@ -4,7 +4,7 @@ module Commands
       include KeyboardHelpers
 
       def call
-        reply_keyboard(button('🍻 Drink-in!'), button('🍻 Drunk beer!'))
+        reply_keyboard(button('🍻 Drink-in!'), button('📊 Stats'))
       end
     end
   end

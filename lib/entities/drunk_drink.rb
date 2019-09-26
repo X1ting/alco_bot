@@ -9,6 +9,7 @@ module Entities
     attribute :drunk_at, CoercibleTime
     attribute :drink_id, ROM::Types::Coercible::Integer
     attribute :drink_type, ROM::Types::Coercible::String
+    attribute :username, ROM::Types::Coercible::String
     attribute :abv, ROM::Types::Coercible::String
     attribute :volume, ROM::Types::Coercible::Integer
   end

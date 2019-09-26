@@ -5,73 +5,63 @@ module Commands
       drink_service: 'services.drink'
     ]
 
+    WRONG_TIME_MESSAGES = [
+      "⌛ They've paid me only for the evening hours ⌛",
+      "⌛ Hey, the party has not yet started! ⌛"
+    ]
+
     def handle_call(message)
-      username = username_for(message.from)
-      send_message(
-        chat_id: message.chat.id,
-        text: '📆 Choose a type of drink',
-        parse_mode: :markdown,
-        reply_markup: menu_keyboard
-      )
-    end
+      chat_id = message.chat.id
+      drink_allowed = false
 
-    def handle_callback(callback, args)
-      id = args.fetch('id') { raise(FallbackError) }
-      drink = repo.by_id(id) || raise(FallbackError)
-      username = username_for(callback.from)
-      volume = args.fetch('volume', false)
-      count = args.fetch('count', false)
-      if !count && !volume
-        ask_for_volume(callback, drink)
-      elsif !count && volume
-        ask_for_count(callback, drink, volume)
+      if wrong_time?
+        message = wrong_time_message
+      elsif drinks_too_fast?(chat_id)
+        message = too_fast_message(chat_id)
       else
-        binding.pry
-        count.times { drink_service.drink(callback.message.chat.id, drink, volume) }
-        report_success(callback)
+        drink_allowed = true
+        message = '📆 Choose a type of drink'
       end
+
+      payload = {
+        chat_id: chat_id,
+        text: message,
+        parse_mode: :markdown,
+      }
+      payload[:reply_markup] = menu_keyboard if drink_allowed
+      send_message(**payload)
     end
 
-    def ask_for_volume(callback, drink)
-      volume_buttons = drink.volumes.map { |volume| button(volume, 'volume', { id: drink.id, volume: volume }) }
-      edit_message_text(
-        message_id: callback.message.message_id,
-        chat_id: callback.message.chat.id,
-        text: "Let choose volume of drink",
-        parse_mode: :markdown,
-        reply_markup: inline_keyboard(
-          volume_buttons,
-          [button('Cancel', 'back', replace: true) ]
-        )
-      )
+    def wrong_time?
+      # (7..17).cover?(Time.now.getlocal('+03:00').hour)
+      false
     end
 
-    def ask_for_count(callback, drink, volume)
-      count_buttons = [1,2,3,4].map { |count| button(count, 'count', { id: drink.id, volume: volume, count: count }) }
-      edit_message_text(
-        message_id: callback.message.message_id,
-        chat_id: callback.message.chat.id,
-        text: "Let choose count of glasses",
-        parse_mode: :markdown,
-        reply_markup: inline_keyboard(
-          count_buttons,
-          [button('Cancel', 'back', replace: true) ]
-        )
-      )
+    def drinks_too_fast?(chat_id)
+      drink_service.drinks_fast?(chat_id)
     end
 
-    def report_success(callback)
-      delete_message(
-        message_id: callback.message.message_id,
-        chat_id: callback.message.chat.id
-      )
+    def wrong_time_message
+      <<~MARKDOWN
+        #{WRONG_TIME_MESSAGES.sample}
+        _(This command works from 18:00 till 7:00)_
+      MARKDOWN
+    end
 
-      send_message(
-        chat_id: callback.message.chat.id,
-        text: "Well done!",
-        parse_mode: :markdown,
-        reply_markup: Keyboards::MainReplyKeyboard.new.call
-      )
+    def too_fast_message(chat_id)
+      <<~MARKDOWN
+        ⏳ I don't believe you are drinking that fast ⌛
+        (we have a 60 seconds timeout between glasses, try again after #{next_drink_adviced_time(chat_id)})
+        _Already drunk today: #{drunkness_scale(chat_id)}_
+      MARKDOWN
+    end
+
+    def drunkness_scale(chat_id)
+      drink_service.user_total_emoji(chat_id)
+    end
+
+    def next_drink_adviced_time(chat_id)
+      drink_service.time_to_drink(chat_id).localtime('+03:00').strftime('%T')
     end
 
     def menu_keyboard
@@ -80,7 +70,7 @@ module Commands
     end
 
     def button_for(drink)
-      button("#{drink.emoji} #{drink.name} #{drink.abv}%", 'drink', { id: drink.id })
+      button("#{drink.emoji} #{drink.name} #{drink.abv}°", 'drink', { id: drink.id })
     end
   end
 end

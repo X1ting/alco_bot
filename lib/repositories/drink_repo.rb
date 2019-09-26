@@ -8,9 +8,9 @@ module Repositories
 
     def find_by_user_id(user_id)
       data = drinks.with(auto_struct: false).lrange(user_id, 0, -1)
-
       mapper = -> (data) do
-        [{ user_id: user_id, drunk_drinks: data.first.map{ |item| JSON.parse(item, symbolize_names: true) } }]
+        drunk_drinks = data.first.map{ |item| JSON.parse(item, symbolize_names: true) }
+        [{ user_id: user_id, drunk_drinks: drunk_drinks }]
       end
 
       mapped = data >> mapper
@@ -24,7 +24,8 @@ module Repositories
       mapper = -> (user_ids) do
         user_ids.first.map do |user_id|
           data = drinks.with(auto_struct: false).lrange(user_id, 0, -1).first
-          { user_id: user_id, drunk_drinks: data.map{ |item| JSON.parse(item, symbolize_names: true) } }
+          drunk_drinks = data.map{ |item| JSON.parse(item, symbolize_names: true) }
+          { user_id: user_id, drunk_drinks: drunk_drinks }
         end
       end
 
