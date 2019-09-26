@@ -1,9 +1,4 @@
 module Entities
-  class UserDrunk < ROM::Struct
-    attribute :user_id, ROM::Types::Coercible::String
-    attribute :drunk_drinks, ROM::Types::Strict::Array.of(Hash)
-  end
-
   class DrunkDrink < ROM::Struct
     CoercibleTime = ROM::Types::String.constructor do |value|
       ::Time.parse(value)
@@ -17,5 +12,9 @@ module Entities
     attribute :username, ROM::Types::Coercible::String
     attribute :abv, ROM::Types::Coercible::String
     attribute :volume, ROM::Types::Coercible::Integer
+  end
+  class UserDrunk < ROM::Struct
+    attribute :user_id, ROM::Types::Coercible::String
+    attribute :drunk_drinks, ROM::Types::Strict::Array.of(DrunkDrink)
   end
 end
