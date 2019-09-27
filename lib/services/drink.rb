@@ -114,15 +114,15 @@ module Services
     end
 
     def leader_by_alc
-      users_stats.sort_by { |k,v| v[:alc_volume] }.first(3)
+      users_stats.sort_by { |k,v| -v[:alc_volume] }.first(3)
     end
 
     def leader_by_volume
-      users_stats.sort_by { |k,v| v[:volume] }.first(3)
+      users_stats.sort_by { |k,v| -v[:volume] }.first(3)
     end
 
     def leader_by_count
-      users_stats.sort_by { |k,v| v[:count] }.first(3)
+      users_stats.sort_by { |k,v| -v[:count] }.first(3)
     end
 
     def drinks_fast?(user_id)

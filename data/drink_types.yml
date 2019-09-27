@@ -4,9 +4,9 @@ drink_types:
     abv: 5
     emoji: 🍺
     volumes:
-      - 300
+      - 250
+      - 400
       - 500
-      - 1000
   - id: 1
     name: Cocktail
     abv: 12

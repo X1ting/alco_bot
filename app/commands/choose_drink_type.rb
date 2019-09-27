@@ -65,7 +65,7 @@ module Commands
     end
 
     def menu_keyboard
-      buttons = repo.all.map { |drink| button_for(drink) }.each_slice(3).to_a
+      buttons = repo.all.map { |drink| button_for(drink) }.each_slice(2).to_a
       inline_keyboard(*buttons)
     end
 
