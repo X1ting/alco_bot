@@ -25,7 +25,7 @@ module Commands
         #{drink_service.user_total_emoji(chat_id)}
         **Volume:** #{formatted_volume}
         **Alcohol:** #{drink_service.user_total_alc(chat_id).to_i}ml.
-        **Glasses:** #{drink_service.user_total(chat_id)}
+        **Glasses:** #{drink_service.user_total_by_last_day(chat_id)}
       MARKDOWN
     end
   end

@@ -50,14 +50,19 @@ module Commands
     end
 
     def report_success(callback)
+      chat_id = callback.message.chat.id
       delete_message(
         message_id: callback.message.message_id,
-        chat_id: callback.message.chat.id
+        chat_id: chat_id
       )
+      message = <<~MARKDOWN
+        #{drink_service.scale_of_drunkness(chat_id)}.
+        _Already drunk today: #{drink_service.user_total_emoji(chat_id)}_
+      MARKDOWN
 
       send_message(
-        chat_id: callback.message.chat.id,
-        text: "Well done!",
+        chat_id: chat_id,
+        text: message,
         parse_mode: :markdown,
         reply_markup: Keyboards::MainReplyKeyboard.new.call
       )

@@ -9,7 +9,7 @@ module Services
 
     SCALE_OF_DRUNKNESS = {
       1 => ['🇷🇺 In Russia we say: mezdu pervoi i vtoroi pererivchik nebolshoi 🇷🇺', '💫 Good start! 💫'],
-      2 => ['️🏋️‍♂️ While you were finishing this beer - I was downd my third glass 🏋️‍♀️', '👮‍♂️ I hope you got here by bus? 👮‍♂️'],
+      2 => ['🏋️‍♂️ While you were finishing this beer - I was downd my third glass 🏋️‍♀️', '👮‍♂️ I hope you got here by bus? 👮‍♂️'],
       3 => ['🐳 Now it is time to pee 🐳', '🤓 Time to discuss the last GOT 🤓'],
       4 => ['4️⃣ The good, the bad and the fourth glass 4️⃣', '🎙 What do you think about karaoke bar? 🎙'],
       5 => ['🤞 How many fingers are there? ✌️', '💔 Time to call your ex 💔'],
@@ -43,11 +43,11 @@ module Services
     end
 
     def user_total(user_id)
-      user_by_last_day(user_id).count
+      repo.find_by_user_id(user_id).drunk_drinks.count
     end
 
     def user_total_by_last_day(user_id)
-      user_by_last_day.count
+      user_by_last_day(user_id).count
     end
 
     def user_total_emoji(user_id)
