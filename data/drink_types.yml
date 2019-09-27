@@ -8,13 +8,13 @@ drink_types:
       - 400
       - 500
   - id: 1
-    name: Cocktail
-    abv: 12
-    emoji: 🍸
+    name: Beer
+    abv: 7
+    emoji: 🍺
     volumes:
       - 250
+      - 400
       - 500
-      - 1000
   - id: 2
     name: Whiskey
     abv: 40
@@ -48,6 +48,14 @@ drink_types:
       - 100
       - 200
   - id: 6
+    name: Cocktail
+    abv: 12
+    emoji: 🍸
+    volumes:
+      - 250
+      - 500
+      - 1000
+  - id: 7
     name: Wine
     abv: 12
     emoji: 🍷
@@ -55,10 +63,10 @@ drink_types:
       - 125
       - 250
       - 500
-  - id: 7
+  - id: 8
     name: Samogon
     abv: 60
-    emoji: ⚰️
+    emoji: ⚰
     volumes:
       - 40
       - 100

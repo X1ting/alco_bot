@@ -9,13 +9,17 @@ module Services
 
     SCALE_OF_DRUNKNESS = {
       1 => ['🇷🇺 In Russia we say: mezdu pervoi i vtoroi pererivchik nebolshoi 🇷🇺', '💫 Good start! 💫'],
-      2 => ['🏋️‍♂️ While you were finishing this beer - I was downd my third glass 🏋️‍♀️', '👮‍♂️ I hope you got here by bus? 👮‍♂️'],
-      3 => ['🐳 Now it is time to pee 🐳', '🤓 Time to discuss the last GOT 🤓'],
+      2 => ['🇯🇵 New quest: Find Matz and say him: "domo arigatou gozaimasu" 🇯🇵'],
+      3 => ['🏋️‍♂️ While you were finishing this beer - I was downd my third glass 🏋️‍♀️', '👮‍♂️ I hope you got here by bus? 👮‍♂️'],
       4 => ['4️⃣ The good, the bad and the fourth glass 4️⃣', '🎙 What do you think about karaoke bar? 🎙'],
-      5 => ['🤞 How many fingers are there? ✌️', '💔 Time to call your ex 💔'],
-      6 => ['❓ New quest: you should to find Anton Davydov and ask him smth about Hanami ❓'],
-      7 => ['🍺 Remember your first glass? Neither do I 🍺', '💣 I think it is time to get hard stuff 💣'],
-      8 => ['👋 Now I leave your alone with your beer, YOU WON! 👋']
+      5 => ['🐳 Now it is time to pee 🐳', '🤓 Time to discuss the last GOT 🤓'],
+      6 => ['❓ New quest: you should find Anton Davydov and ask him smth about Hanami ❓'],
+      7 => ['❓ New quest: Let`s find Nick and ask him "Is Ruby Dead?" ❓'],
+      8 => ['🤞 How many fingers are there? ✌️', '💔 Time to call your ex 💔'],
+      9 => ['🍺 Remember your first glass? Neither do I 🍺'],
+      10 => ['💣 I think it is time to get hard stuff 💣'],
+      11 => ['👋 Now I leave your alone with your drink, YOU WON! 👋'],
+      12 => ['🤢 Sorry fellow, I am too drunk. Count it yourself 🤢']
     }
 
     def drink(user_id, username, drink, volume)
@@ -136,7 +140,7 @@ module Services
 
     def scale_of_drunkness(user_id)
       scale = SCALE_OF_DRUNKNESS[user_total_by_last_day(user_id)]
-      return '🥴 Sorry fellow, I am too drunk. Count it yourself 🥴' if scale.nil?
+      return '🎉 Congrats! You won a prize. Find Anton Davydov to get it. 🎉' if scale.nil?
       scale.sample
     end
   end
