@@ -5,7 +5,7 @@ module Services
       drink_types_repo: 'repositories.drink_type_repo',
     ]
 
-    THROTTLING_DRINK_TIMEOUT = 60 # 5 minutes
+    THROTTLING_DRINK_TIMEOUT = 60 # 1 minutes
 
     SCALE_OF_DRUNKNESS = {
       1 => ['🇷🇺 In Russia we say: mezdu pervoi i vtoroi pererivchik nebolshoi 🇷🇺', '💫 Good start! 💫'],
