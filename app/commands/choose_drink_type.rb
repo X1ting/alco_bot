@@ -33,8 +33,7 @@ module Commands
     end
 
     def wrong_time?
-      # (7..17).cover?(Time.now.getlocal('+03:00').hour)
-      false
+      (8..17).cover?(Time.now.getlocal('+03:00').hour)
     end
 
     def drinks_too_fast?(chat_id)
