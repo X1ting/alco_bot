@@ -21,10 +21,10 @@ module Commands
         "#{volume}ml."
       end
       <<~MARKDOWN
-        #{drink_service.user_total_emoji(chat_id)}
-        **Total volume:** #{formatted_volume}
-        **Total alcohol:** #{drink_service.user_total_alc(chat_id).to_i}ml.
-        **Total glasses:** #{drink_service.total}
+        Last day:
+        **Volume:** #{formatted_volume}
+        **Alcohol:** #{drink_service.total_alc.to_i}ml.
+        **Glasses:** #{drink_service.total_last_day}
       MARKDOWN
     end
   end

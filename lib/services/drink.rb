@@ -30,35 +30,49 @@ module Services
       repo.all.map(&:drunk_drinks).flatten
     end
 
+    def all_drinks_last_day
+      all_drinks.select do |drink|
+        drink.drunk_at >= (Time.now - 60 * 60 * 11)
+      end
+    end
+
+    def user_by_last_day(user_id)
+      repo.find_by_user_id(user_id).drunk_drinks.select do |drink|
+        drink.drunk_at >= (Time.now - 60 * 60 * 11)
+      end
+    end
+
     def user_total(user_id)
-      repo.find_by_user_id(user_id).drunk_drinks.count
+      user_by_last_day(user_id).count
     end
 
     def user_total_by_last_day(user_id)
-      repo.find_by_user_id(user_id).drunk_drinks.select do |drink|
-        drink.drunk_at >= (Time.now - 60 * 60 * 11)
-      end.count
+      user_by_last_day.count
     end
 
     def user_total_emoji(user_id)
-      repo.find_by_user_id(user_id).drunk_drinks.reduce("") do |acc, drink|
+      user_by_last_day(user_id).reduce("") do |acc, drink|
         emoji = drink_types_repo.by_id(drink.drink_id).emoji
         acc << emoji
       end
     end
 
     def user_total_volume(user_id)
-      repo.find_by_user_id(user_id).drunk_drinks.reduce(0) do |acc, drink|
+      user_by_last_day(user_id).reduce(0) do |acc, drink|
         acc += drink.volume
       end
     end
 
     def user_total_alc(user_id)
-      repo.find_by_user_id(user_id).drunk_drinks.reduce(0) do |acc, drink|
+      user_by_last_day(user_id).reduce(0) do |acc, drink|
         drink_type = drink_types_repo.by_id(drink.drink_id)
         alc_volume = (drink_type.abv.to_f / 100) * drink.volume.to_f
         acc += alc_volume
       end
+    end
+
+    def total_last_day
+      all_drinks_last_day.count
     end
 
     def total
@@ -67,15 +81,14 @@ module Services
       end.reduce(:+)
     end
 
-
     def total_volume
-      all_drinks.reduce(0) do |acc, drink|
+      all_drinks_last_day.reduce(0) do |acc, drink|
         acc += drink.volume
       end
     end
 
     def total_alc
-      all_drinks.reduce(0) do |acc, drink|
+      all_drinks_last_day.reduce(0) do |acc, drink|
         drink_type = drink_types_repo.by_id(drink.drink_id)
         alc_volume = (drink_type.abv.to_f / 100) * drink.volume.to_f
         acc += alc_volume
@@ -87,7 +100,7 @@ module Services
     end
 
     def users_stats
-      all_drinks.reduce({}) do |acc, drink|
+      all_drinks_last_day.reduce({}) do |acc, drink|
         acc[drink.username] = { alc_volume: 0.0, volume: 0, count: 0 } unless acc[drink.username]
         drink_type = drink_types_repo.by_id(drink.drink_id)
         alc_volume = (drink_type.abv.to_f / 100) * drink.volume.to_f

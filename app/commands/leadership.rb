@@ -16,12 +16,12 @@ module Commands
     def format_message
       <<~MARKDOWN
         **Leaderships:**
-        By volume:
-        #{format_users(drink_service.leader_by_volume, :volume).join("ml. \n")}
-        By abv:
-        #{format_users(drink_service.leader_by_alc, :alc_volume).join("ml. \n")}
+        By volume (ml.):
+        #{format_users(drink_service.leader_by_volume, :volume).join("\n")}
+        By abv (ml.):
+        #{format_users(drink_service.leader_by_alc, :alc_volume).join("\n")}
         By count:
-        #{format_users(drink_service.leader_by_count, :count).join(" glasses \n")}
+        #{format_users(drink_service.leader_by_count, :count).join("\n")}
       MARKDOWN
     end
 
